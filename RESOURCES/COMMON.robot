@@ -5,22 +5,38 @@ Library    DateTime
 Library    OperatingSystem
 Variables    /Users/yhanie/PycharmProjects/PythonProject/SauceDemoTraining/RESOURCES/selectors.py
 
+
 *** Variables ***
 ${BASE_URL}           https://www.saucedemo.com/
 ${CHROMEDRIVER_PATH}  /opt/homebrew/bin/chromedriver
-
+${username}    standard_user  
+${valid_password}    secret_sauce
+${invalid_password}    p@ssword
+${browser}    chrome
 
 *** Keywords ***
+Open SauceDemo Browser
+    Open Browser    ${BASE_URL}    ${browser}
+Login To SauceDemo
+    [Arguments]    ${username}    ${password}
+    Input Text      ${SELECTORS["username_field"]}    ${username} 
+    Input Password  ${SELECTORS["password_field"]}    ${password}
+    Click Button    ${SELECTORS["login_button"]}
+Logout From SauceDemo
+    Click Button    ${SELECTORS["menu_button"]}
+    Wait Until Element Is Visible    ${SELECTORS["logout_link"]}
+    Click Element   ${SELECTORS["logout_link"]}
+    Wait Until Element Is Visible    ${SELECTORS["login_button"]}
 Wait For Products Page
-    Wait Until Element Is Visible    //span[@data-test='title' and text()='Products']
-
+    Wait Until Element Is Visible    ${SELECTORS["title_products"]}
 Wait For Invalid Login Error
-    Wait Until Element Is Visible    //h3[@data-test='error' and text()='Epic sadface: Username and password do not match any user in this service']
-
+    Wait Until Element Is Visible    ${SELECTORS["error_invalid_login"]}
 Save Screenshot With Timestamp
     [Arguments]    ${name}
     ${timestamp}=    Get Current Date    result_format=%Y%m%d_%H%M%S
-    ${path}=         Set Variable    ${CURDIR}/screenshots/${name}_${timestamp}.png
+    ${date}=    Get Current Date    result_format=%Y%m%d
+    ${path}=    Set Variable    ${CURDIR}/screenshots/${date}/${name}_${browser}_${timestamp}.png
     Create Directory    ${CURDIR}/screenshots
     Capture Page Screenshot    ${path}
-
+Close Browser Session
+    Close All Browsers
