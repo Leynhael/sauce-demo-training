@@ -5,8 +5,7 @@ Test Teardown    Close Browser Session
 Default Tags    Feature_Logout    Regression    ${browser}
 
 *** Test Cases ***
- Logout Test Case
+Logout Test Case
      Open SauceDemo Browser
      Login To SauceDemo    ${username}    ${valid_password}
      Logout From SauceDemo
-     Save Screenshot With Timestamp    logout
