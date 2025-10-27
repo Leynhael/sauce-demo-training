@@ -1,25 +1,23 @@
 *** Settings ***
-Library    BuiltIn
-Library    SeleniumLibrary
-Library    DateTime
-Library    OperatingSystem
+Resource    /Users/yhanie/PycharmProjects/PythonProject/SauceDemoTraining/RESOURCES/COMMON.robot
 
-*** Variables ***
 
 *** Keywords ***
 Save Screenshot With Timestamp
     [Arguments]    ${name}
     ${timestamp}=    Get Current Date    result_format=%Y%m%d_%H%M%S
-    ${path}=         Set Variable    ${CURDIR}/screenshots/${name}_${timestamp}.png
+    ${date}=    Get Current Date    result_format=%Y%m%d
+    ${path}=    Set Variable    ${CURDIR}/screenshots/${date}/${name}_${timestamp}.png
     Create Directory    ${CURDIR}/screenshots
     Capture Page Screenshot    ${path}
 
 
 *** Test Cases ***
-Logout Test Case
+ Logout Test Case
     Open Browser    https://www.saucedemo.com/    chrome
+
     Input Text    id=user-name    standard_user
-    Input Text    id=password    secret_sauce
+    Input Password    id=password    secret_sauce
 #    Capture Page Screenshot
     Click Button    id:login-button
     Wait Until Element Is Visible    id=react-burger-menu-btn
